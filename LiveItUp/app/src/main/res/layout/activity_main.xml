@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stats"
+            android:onClick="Stats"
             android:id="@+id/button4"
             android:layout_weight=".25"
             android:textSize="12dp"/>
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inv"
+            android:onClick="Inv"
             android:id="@+id/button5"
             android:layout_weight=".25"
             android:textSize="12dp"/>
@@ -41,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Actions"
+            android:onClick="Actions"
             android:id="@+id/button6"
             android:layout_weight=".25"
             android:textSize="12dp" />
