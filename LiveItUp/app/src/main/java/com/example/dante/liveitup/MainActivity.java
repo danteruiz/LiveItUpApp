@@ -27,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity instance = null;
 
     private int energy = 80;
+    public int energyMax = 100;
     private int hunger = 70;
+    public int hungerMax = 100;
     private int emotion = 50;
+    public int emotionMax = 100;
 
     SharedPreferences settings;
     public static MainActivity getActivity(){
@@ -84,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
         le.textLabel = "Sleep";
         le.tag = "Sleep1";
         aList.add(le);
+        ListElement le2 = new ListElement();
+        le2.textLabel = "Test";
+        le2.tag = "Test";
+        aList.add(le2);
     }
 
 
@@ -92,10 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
         energy = settings.getInt("energy", energy);
         progressBar.setProgress(energy);
+        progressBar.setMax(energyMax);
         String energyText = Integer.toString(energy);
+        energyMax = settings.getInt("energyMax", energyMax);
+        String energyMaxText = Integer.toString(energyMax);
         TextView view = (TextView) findViewById(R.id.textView5);
 
-        view.setText(energyText + "/100");
+        view.setText(energyText + "/" + energyMaxText);
 
         hunger = settings.getInt("hunger", hunger);
         progressBar2.setProgress(hunger);

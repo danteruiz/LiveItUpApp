@@ -49,16 +49,29 @@ public class ListClickHandler implements OnItemClickListener {
         String action = item.tag;
 
 
-        if(action.equals("Sleep1"))
+        if(action.equals("Sleep1")) // sleep level one
         {
             energy = settings.getInt("energy", energy);
             energy += 20;
-            if(energy > 100){
-                energy = 100;
+            if(energy > Activity.energyMax){
+                energy = Activity.energyMax;
             }
             editor.putInt("energy", energy);
             editor.commit();
         }
+
+        if(action.equals("Test")) // Test to make sleep go down
+        {
+            energy = settings.getInt("energy", energy);
+            energy -= 20;
+            if(energy < 0){
+                energy = 0;
+            }
+            editor.putInt("energy", energy);
+            editor.commit();
+        }
+
+
         Activity.init();
     }
 
