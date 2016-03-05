@@ -62,12 +62,13 @@ public class ListAdapter extends ArrayAdapter<ListElement>
 
         // Fills in the view.
         TextView tv = (TextView) newView.findViewById(R.id.itemText);
-             tv.setText("hello");
+             tv.setText(w.textLabel);
 
         // Set a listener for the whole list item.
         newView.setTag("hello");
 
         return newView;
     }
+
 }
 

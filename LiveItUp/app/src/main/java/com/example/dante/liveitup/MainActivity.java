@@ -1,5 +1,6 @@
 package com.example.dante.liveitup;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,17 +10,33 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
-    private int progressStatus = 100;
+    private ProgressBar progressBar2;
+    private ProgressBar progressBar3;
     private TextView textView;
     private Handler handler = new Handler();
     private ArrayList<ListElement> aList;
     private ListAdapter aa;
+
+    private static MainActivity instance = null;
+
+    private int energy = 80;
+    private int hunger = 70;
+    private int emotion = 50;
+
+    SharedPreferences settings;
+    public static MainActivity getActivity(){
+        if(instance == null){
+            instance = new MainActivity();
+        }
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,39 +44,72 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
+        progressBar3 = (ProgressBar) findViewById(R.id.progressBar3);
 
+        settings = PreferenceManager.getDefaultSharedPreferences((this));
 
         aList = new ArrayList<ListElement>();
         aa = new ListAdapter(this, R.layout.list_view, aList);
         ListView myListView = (ListView) findViewById(R.id.listView);
         myListView.setAdapter(aa);
-        myListView.setOnItemClickListener(new ListClickHandler());
+
+        init();
+
+        myListView.setOnItemClickListener(new ListClickHandler(energy, hunger, emotion, settings, this));
         // Read from appInfo the list of friends, and sets it.
-        for (int i = 0; i < 6; i++) {
-            ListElement le = new ListElement();
-            le.textLabel = "hello";
-            le.buttonLabel = "Choose";
-            aList.add(le);
-        }
         aa.notifyDataSetChanged();
+
+        instance = this;
+
 
     }
 
     public void Stats(View v)
     {
         aa.clear();
-        progressStatus += 5;
-        progressBar.setProgress(progressStatus);
     }
     public void Inv(View v)
     {
         aa.clear();
-        progressStatus -= 5;
-        progressBar.setProgress(progressStatus);
     }
 
     public void Actions(View v)
     {
         aa.clear();
+        MorningA();
+    }
+    public void MorningA(){
+        ListElement le = new ListElement();
+        le.textLabel = "Sleep";
+        le.tag = "Sleep1";
+        aList.add(le);
+    }
+
+
+    public void init()
+    {
+
+        energy = settings.getInt("energy", energy);
+        progressBar.setProgress(energy);
+        String energyText = Integer.toString(energy);
+        TextView view = (TextView) findViewById(R.id.textView5);
+
+        view.setText(energyText + "/100");
+
+        hunger = settings.getInt("hunger", hunger);
+        progressBar2.setProgress(hunger);
+        String hungerText = Integer.toString(hunger);
+        TextView view2 = (TextView) findViewById(R.id.textView7);
+
+        view2.setText(hungerText + "/100");
+
+        emotion = settings.getInt("emotion", emotion);
+        progressBar3.setProgress(emotion);
+        String emotionText = Integer.toString(emotion);
+        TextView view3 = (TextView) findViewById(R.id.textView9);
+
+        view3.setText(emotionText + "/100");
+
     }
 }

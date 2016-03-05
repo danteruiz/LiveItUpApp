@@ -14,12 +14,12 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/linearLayout"
-        android:layout_below="@+id/linearLayout2"
+        android:layout_below="@+id/linearLayout5"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="162dp">
+        android:layout_marginTop="10dp">
 
         <Button
             android:layout_width="wrap_content"
@@ -122,7 +122,6 @@
             android:id="@+id/progressBar"
             android:minHeight="25dp"
             android:max ="100"
-            android:progress="100"
             android:layout_weight=".80"
             android:gravity="center"/>
 
@@ -163,7 +162,6 @@
             android:id="@+id/progressBar2"
             android:minHeight="25dp"
             android:max ="100"
-            android:progress="100"
             android:layout_weight=".80"
             android:gravity="center"/>
 
@@ -204,7 +202,6 @@
             android:id="@+id/progressBar3"
             android:minHeight="25dp"
             android:max ="100"
-            android:progress="100"
             android:layout_weight=".80"
             android:gravity="center"/>
 
@@ -217,6 +214,13 @@
             android:layout_weight=".10"
             android:gravity="center"/>
     </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
