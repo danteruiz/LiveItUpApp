@@ -60,7 +60,7 @@ public class ListClickHandler implements OnItemClickListener {
         }
         if(action.equals("movies")){
             if(Activity.money >= 10 && emotion != Activity.emotionMax){
-                emotion += 40;
+                emotion += 30;
                 if(emotion > Activity.emotionMax)
                     emotion = Activity.emotionMax;
                 Activity.money -= 10;
@@ -69,8 +69,13 @@ public class ListClickHandler implements OnItemClickListener {
             }
         }
 
-
-
+        if(action.equals("tv")){
+            emotion += 20;
+            if(emotion > Activity.emotionMax)
+                emotion = Activity.emotionMax;
+            editor.putInt("emotion", emotion);
+            editor.commit();
+        }
         Activity.init();
     }
 
