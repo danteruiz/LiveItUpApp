@@ -19,10 +19,15 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ProgressBar progressBar2;
     private ProgressBar progressBar3;
-    private TextView textView;
+    private TextView countDay;
+    private TextView dayAndAction;
     private Handler handler = new Handler();
     private ArrayList<ListElement> aList;
     private ListAdapter aa;
+    public String timeOfDay = "Morning";
+    public int numberDay = 3;
+    public int actionCount = 3;
+    public int money = 150;
 
     private static MainActivity instance = null;
 
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         progressBar3 = (ProgressBar) findViewById(R.id.progressBar3);
+        countDay = (TextView) findViewById(R.id.textView);
+        dayAndAction = (TextView) findViewById(R.id.textView2);
+
 
         settings = PreferenceManager.getDefaultSharedPreferences((this));
 
@@ -92,27 +100,107 @@ public class MainActivity extends AppCompatActivity {
     public void Actions(View v)
     {
         aa.clear();
-        MorningA();
+        if(timeOfDay.equals("Morning"))
+            morningA();
+        if(timeOfDay.equals("Afternoon"))
+            afternoonA();
+        if(timeOfDay.equals("Evening"))
+            eveningA();
     }
-    public void MorningA(){
+    public void morningA(){
+        ListElement le = new ListElement();
+        le.textLabel = "Take a nap";
+        le.tag = "nap1";
+        aList.add(le);
+        ListElement le2 = new ListElement();
+        le2.textLabel = "Eat breakfest: $5";
+        le2.tag = "breakfest1";
+        aList.add(le2);
+        ListElement le3 =  new ListElement();
+        le3.textLabel = "Morning jog";
+        le3.tag = "jog1";
+        aList.add(le3);
+        ListElement le4 =  new ListElement();
+        le4.textLabel = "Work odd jobs: +$20";
+        le4.tag = "work1";
+        aList.add(le4);
+        ListElement le5 =  new ListElement();
+        le5.textLabel = "Volunteer work";
+        le5.tag = "volunteer";
+        aList.add(le5);
+        ListElement le6 =  new ListElement();
+        le6.textLabel = "Go to the movies: -$10";
+        le6.tag = "movies";
+        aList.add(le6);
+    }
+
+    public void afternoonA(){
+        ListElement le = new ListElement();
+        le.textLabel = "Take a mid day nap";
+        le.tag = "nap1";
+        aList.add(le);
+        ListElement le2 = new ListElement();
+        le2.textLabel = "Eat Lunch: -$7";
+        le2.tag = "lunch1";
+        aList.add(le2);
+        ListElement le3 =  new ListElement();
+        le3.textLabel = "Afternoon jog";
+        le3.tag = "jog1";
+        aList.add(le3);
+        ListElement le4 =  new ListElement();
+        le4.textLabel = "Go to the gym: -$15";
+        le4.tag = "gym";
+        aList.add(le4);
+        ListElement le5 =  new ListElement();
+        le5.textLabel = "Work odd jobs: +$20";
+        le5.tag = "work1";
+        aList.add(le5);
+        ListElement le6 =  new ListElement();
+        le6.textLabel = "Go to the movies: -$10";
+        le6.tag = "movies";
+        aList.add(le6);
+    }
+
+    public void eveningA(){
         ListElement le = new ListElement();
         le.textLabel = "Sleep";
         le.tag = "Sleep1";
         aList.add(le);
         ListElement le2 = new ListElement();
-        le2.textLabel = "Eat Breakfest";
-        le2.tag = "Eat Breakfest";
+        le2.textLabel = "Eat Dinner: -$10";
+        le2.tag = "dinner1";
         aList.add(le2);
         ListElement le3 =  new ListElement();
-        le3.textLabel = "Morning jog";
-        le3.tag = "jog";
+        le3.textLabel = "Late night jog... risky";
+        le3.tag = "jog2";
         aList.add(le3);
+        ListElement le4 =  new ListElement();
+        le4.textLabel = "Go to the gym: -$15";
+        le4.tag = "gym";
+        aList.add(le4);
+        ListElement le5 =  new ListElement();
+        le5.textLabel = "Go out to drink: -$15 to -$30";
+        le5.tag = "drink";
+        aList.add(le5);
     }
 
 
 
     public void init()
     {
+
+        timeOfDay = settings.getString("Morning", timeOfDay);
+        String actionText = Integer.toString(actionCount);
+        dayAndAction.setText(timeOfDay + ": " + actionText + " actions");
+
+        numberDay = settings.getInt("1", numberDay);
+        String dayText = Integer.toString(numberDay);
+        countDay.setText("Day:" + dayText);
+
+        money = settings.getInt("100", money);
+        TextView moneyAmount = (TextView) findViewById(R.id.textView3);
+        String moneyText = Integer.toString(money);
+        moneyAmount.setText("$" + moneyText);
 
         energy = settings.getInt("energy", energy);
         energyMax = settings.getInt("energyMax", energyMax);

@@ -24,9 +24,6 @@ public class ListClickHandler implements OnItemClickListener {
     private int energy;
     private int hunger;
     private int emotion;
-    private ProgressBar progressBar;
-    private ProgressBar progressBar2;
-    private ProgressBar progressBar3;
 
     SharedPreferences settings;
     SharedPreferences.Editor editor;
@@ -47,11 +44,13 @@ public class ListClickHandler implements OnItemClickListener {
     public void onItemClick(AdapterView<?> adapter, View view, int position, long arg3) {
         ListElement item = (ListElement) adapter.getItemAtPosition(position);
         String action = item.tag;
+        energy = settings.getInt("energy", energy);
+        Activity.money = settings.getInt("money", Activity.money);
+        hunger = settings.getInt("hunger", hunger);
+        emotion = settings.getInt("emotion", emotion);
 
-
-        if(action.equals("Sleep1")) // sleep level one
+        if(action.equals("nap1")) // sleep level one
         {
-            energy = settings.getInt("energy", energy);
             energy += 20;
             if(energy > Activity.energyMax){
                 energy = Activity.energyMax;
@@ -59,17 +58,17 @@ public class ListClickHandler implements OnItemClickListener {
             editor.putInt("energy", energy);
             editor.commit();
         }
-
-        if(action.equals("Test")) // Test to make sleep go down
-        {
-            energy = settings.getInt("energy", energy);
-            energy -= 20;
-            if(energy < 0){
-                energy = 0;
+        if(action.equals("movies")){
+            if(Activity.money >= 10 && emotion != Activity.emotionMax){
+                emotion += 40;
+                if(emotion > Activity.emotionMax)
+                    emotion = Activity.emotionMax;
+                Activity.money -= 10;
+                editor.putInt("emotion", emotion);
+                editor.commit();
             }
-            editor.putInt("energy", energy);
-            editor.commit();
         }
+
 
 
         Activity.init();
