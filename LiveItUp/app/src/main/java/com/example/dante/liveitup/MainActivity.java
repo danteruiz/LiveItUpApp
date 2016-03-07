@@ -71,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
     public void Stats(View v)
     {
         aa.clear();
+        ListElement le = new ListElement();
+        le.textLabel = "Body size:";
+        le.tag = "size";
+        aList.add(le);
+        ListElement le2 = new ListElement();
+        le2.textLabel = "Intelligence";
+        le2.tag = "Intelligence";
+        aList.add(le2);
+        ListElement le3 = new ListElement();
+        le3.textLabel = "charisma";
+        le3.tag = "charisma";
+        aList.add(le3);
     }
     public void Inv(View v)
     {
@@ -88,10 +100,15 @@ public class MainActivity extends AppCompatActivity {
         le.tag = "Sleep1";
         aList.add(le);
         ListElement le2 = new ListElement();
-        le2.textLabel = "Test";
-        le2.tag = "Test";
+        le2.textLabel = "Eat Breakfest";
+        le2.tag = "Eat Breakfest";
         aList.add(le2);
+        ListElement le3 =  new ListElement();
+        le3.textLabel = "Morning jog";
+        le3.tag = "jog";
+        aList.add(le3);
     }
+
 
 
     public void init()
