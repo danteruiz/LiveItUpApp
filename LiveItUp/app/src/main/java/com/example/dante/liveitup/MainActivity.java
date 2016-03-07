@@ -115,28 +115,34 @@ public class MainActivity extends AppCompatActivity {
     {
 
         energy = settings.getInt("energy", energy);
+        energyMax = settings.getInt("energyMax", energyMax);
         progressBar.setProgress(energy);
         progressBar.setMax(energyMax);
         String energyText = Integer.toString(energy);
-        energyMax = settings.getInt("energyMax", energyMax);
         String energyMaxText = Integer.toString(energyMax);
         TextView view = (TextView) findViewById(R.id.textView5);
 
         view.setText(energyText + "/" + energyMaxText);
 
         hunger = settings.getInt("hunger", hunger);
+        energyMax = settings.getInt("hungerMax", hungerMax);
         progressBar2.setProgress(hunger);
+        progressBar2.setMax(hungerMax);
         String hungerText = Integer.toString(hunger);
+        String hungerMaxText = Integer.toString(hungerMax);
         TextView view2 = (TextView) findViewById(R.id.textView7);
 
-        view2.setText(hungerText + "/100");
+        view2.setText(hungerText + "/" + hungerMaxText);
 
         emotion = settings.getInt("emotion", emotion);
+        emotionMax = settings.getInt("emotionMax", emotionMax);
         progressBar3.setProgress(emotion);
+        progressBar3.setMax(emotionMax);
         String emotionText = Integer.toString(emotion);
+        String emotionMaxText = Integer.toString(emotionMax);
         TextView view3 = (TextView) findViewById(R.id.textView9);
 
-        view3.setText(emotionText + "/100");
+        view3.setText(emotionText + "/" + emotionMaxText);
 
     }
 }
