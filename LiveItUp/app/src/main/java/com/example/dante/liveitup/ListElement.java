@@ -7,11 +7,11 @@ public class ListElement
 {
     ListElement() {};
 
-    ListElement(String tl, String bl) {
+    ListElement(String tl, String tag) {
         textLabel = tl;
-        buttonLabel = bl;
+        this.tag = tag;
     }
 
     public String textLabel;
-    public String buttonLabel;
+    public String tag;
 }
