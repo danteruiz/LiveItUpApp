@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public int numberDay = 3;
     public int actionCount = 3;
     public int money = 150;
+    public ArrayList<String> inv = new ArrayList<String>();
 
     private static MainActivity instance = null;
 
@@ -38,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
     private int emotion = 50;
     public int emotionMax = 100;
 
+
+    private String current_list;
+
     SharedPreferences settings;
-    public static MainActivity getActivity(){
+    public static MainActivity getActivity()
+    {
         if(instance == null){
             instance = new MainActivity();
         }
@@ -76,8 +82,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void decrement_count()
+    {
+        actionCount--;
+        if(actionCount == 0)
+        {
+            actionCount = 3;
+            if(timeOfDay.equals("Morning"))
+            {
+                timeOfDay = "Afternoon";
+                reload();
+                return;
+            }
+
+            if(timeOfDay.equals("Afternoon"))
+            {
+                timeOfDay = "Evening";
+                reload();
+                return;
+            }
+
+            if(timeOfDay.equals("Evening"))
+            {
+                timeOfDay = "Morning";
+                reload();
+                return;
+            }
+
+
+        }
+    }
+
+    public void reload()
+    {
+        if(current_list.equals("stats"))
+        {
+            Stats(null);
+        }
+
+        if(current_list.equals("actions"))
+        {
+            Actions(null);
+        }
+
+        if(current_list.equals("store"))
+        {
+            Store(null);
+        }
+    }
+
     public void Stats(View v)
     {
+        current_list = "stats";
         aa.clear();
         ListElement le = new ListElement();
         le.textLabel = "Body size:";
@@ -92,13 +148,26 @@ public class MainActivity extends AppCompatActivity {
         le3.tag = "charisma";
         aList.add(le3);
     }
+
     public void Inv(View v)
     {
+        current_list = "inv";
         aa.clear();
+
+        for(int i = 0; i < inv.size(); i++)
+        {
+            String tag = inv.get(i);
+            ListElement le = new ListElement();
+            le.textLabel = tag;
+            le.tag = tag;
+            aList.add(le);
+        }
+
     }
 
     public void Actions(View v)
     {
+        current_list = "actions";
         aa.clear();
         if(timeOfDay.equals("Morning"))
             morningA();
@@ -107,6 +176,20 @@ public class MainActivity extends AppCompatActivity {
         if(timeOfDay.equals("Evening"))
             eveningA();
     }
+
+
+    public void Store(View v)
+    {
+        current_list = "store";
+        aa.clear();
+        ListElement le = new ListElement();
+        le.textLabel = "TV: 50$";
+        le.tag = "tv";
+        le.cost = 50;
+        aList.add(le);
+
+    }
+
     public void morningA(){
         ListElement le = new ListElement();
         le.textLabel = "Take a nap";
@@ -132,6 +215,14 @@ public class MainActivity extends AppCompatActivity {
         le6.textLabel = "Go to the movies: -$10";
         le6.tag = "movies";
         aList.add(le6);
+
+        if(inv.contains("Tv"))
+        {
+            ListElement le7 =  new ListElement();
+            le7.textLabel = "Watch TV";
+            le7.tag = "Watch TV";
+            aList.add(le7);
+        }
     }
 
     public void afternoonA(){
