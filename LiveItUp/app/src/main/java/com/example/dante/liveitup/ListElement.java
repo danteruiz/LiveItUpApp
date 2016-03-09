@@ -10,8 +10,10 @@ public class ListElement
     ListElement(String tl, String tag) {
         textLabel = tl;
         this.tag = tag;
+
     }
 
     public String textLabel;
     public String tag;
+    public int cost;
 }

@@ -57,7 +57,9 @@ public class ListClickHandler implements OnItemClickListener {
             }
             editor.putInt("energy", energy);
             editor.commit();
+            Activity.decrement_count();
         }
+
         if(action.equals("movies")){
             if(Activity.money >= 10 && emotion != Activity.emotionMax){
                 emotion += 30;
@@ -66,16 +68,33 @@ public class ListClickHandler implements OnItemClickListener {
                 Activity.money -= 10;
                 editor.putInt("emotion", emotion);
                 editor.commit();
+                Activity.decrement_count();
             }
         }
 
-        if(action.equals("tv")){
+        if(action.equals("tv"))
+        {
+            if (Activity.money > item.cost)
+            {
+                emotion += 20;
+                if (emotion > Activity.emotionMax)
+                    emotion = Activity.emotionMax;
+                editor.putInt("emotion", emotion);
+                editor.commit();
+                Activity.decrement_count();
+                Activity.inv.add("Tv");
+            }
+        }
+
+        if(action.equals("Watch TV"))
+        {
             emotion += 20;
-            if(emotion > Activity.emotionMax)
+            if (emotion > Activity.emotionMax)
                 emotion = Activity.emotionMax;
             editor.putInt("emotion", emotion);
             editor.commit();
         }
+
         Activity.init();
     }
 
