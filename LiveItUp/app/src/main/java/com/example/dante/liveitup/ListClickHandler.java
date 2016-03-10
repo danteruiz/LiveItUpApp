@@ -51,38 +51,94 @@ public class ListClickHandler implements OnItemClickListener {
 
         if(action.equals("nap1")) // sleep level one
         {
-            energy += 20;
+            hunger -=10;
+            if(hunger < 0){
+                hunger +=10;
+                return;
+            }
+
+            energy += 20 + Activity.energyMax/10;
             if(energy > Activity.energyMax){
                 energy = Activity.energyMax;
             }
+
             editor.putInt("energy", energy);
+            editor.putInt("hunger", hunger);
+            editor.commit();
+            Activity.decrement_count();
+            Activity.reload();
+        }
+
+        if(action.equals("sleep1")) // sleep level one
+        {
+
+            hunger -=20;
+            if(hunger < 0){
+                hunger +=20;
+                return;
+            }
+
+            energy += 60 + Activity.energyMax/10;
+            if(energy > Activity.energyMax){
+                energy = Activity.energyMax;
+            }
+
+            editor.putInt("energy", energy);
+            editor.putInt("hunger", hunger);
             editor.commit();
             Activity.decrement_count();
         }
 
-        if(action.equals("movies")){
-            if(Activity.money >= 10 && emotion != Activity.emotionMax){
-                emotion += 30;
-                if(emotion > Activity.emotionMax)
-                    emotion = Activity.emotionMax;
-                Activity.money -= 10;
-                editor.putInt("emotion", emotion);
-                editor.commit();
-                Activity.decrement_count();
+        if(action.equals("breakfast1")){
+
+            if(Activity.money < item.cost) return;
+            Activity.money -= item.cost;
+
+            energy -=10;
+            if(energy < 0){
+                energy +=10;
+                return;
             }
+
+            hunger += 30 + Activity.hungerMax/10;
+            if(hunger > Activity.hungerMax) hunger = Activity.hungerMax;
+
+            editor.putInt("energy", energy);
+            editor.putInt("hunger", hunger);
+            editor.commit();
+            Activity.decrement_count();
+        }
+
+        if(action.equals("jog1")){
+
+            energy -= 30;
+            if(energy < 0){
+                energy +=30;
+                return;
+            }
+            
+            emotion += 10 + Activity.emotionMax/10;
+            if(emotion > Activity.emotionMax) emotion = Activity.emotionMax;
+
+            Activity.bodyProgress += 50;
+            if(Activity.bodyProgress == 100){
+                Activity.bodyIncrease();
+                Activity.bodyProgress = 0;
+                Activity.energyMax += 50;
+            }
+
+            editor.putInt("energy", energy);
+            editor.commit();
+            Activity.decrement_count();
+
         }
 
         if(action.equals("tv"))
         {
-            if (Activity.money > item.cost)
-            {
-                emotion += 20;
-                if (emotion > Activity.emotionMax)
-                    emotion = Activity.emotionMax;
-                editor.putInt("emotion", emotion);
-                editor.commit();
+            if (Activity.money > item.cost && Activity.inv.contains("Tv") == false) {
                 Activity.decrement_count();
                 Activity.inv.add("Tv");
+                Activity.money -= item.cost;
             }
         }
 
