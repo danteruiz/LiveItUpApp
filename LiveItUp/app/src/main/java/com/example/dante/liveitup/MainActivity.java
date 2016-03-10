@@ -26,9 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ListElement> aList;
     private ListAdapter aa;
     public String timeOfDay = "Morning";
-    public int numberDay = 3;
+    public int numberDay = 1;
     public int actionCount = 3;
     public int money = 150;
+    public String bodySize = "Puny";
+    public int bodyProgress = 0;
     public ArrayList<String> inv = new ArrayList<String>();
 
     private static MainActivity instance = null;
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             if(timeOfDay.equals("Evening"))
             {
                 timeOfDay = "Morning";
+                numberDay += 1;
                 reload();
                 return;
             }
@@ -112,6 +115,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public void bodyIncrease(){
+        if(bodySize.equals("Puny")) bodySize = "Small build";
+        if(bodySize.equals("Small build")) bodySize = "Medium build";
+        if(bodySize.equals("Medium build")) bodySize = "Athletic build";
+        if(bodySize.equals("Althetic build")) bodySize = "Max build";
+    }
+
 
     public void reload()
     {
@@ -136,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         current_list = "stats";
         aa.clear();
         ListElement le = new ListElement();
-        le.textLabel = "Body size:";
+        le.textLabel = "Body size: " + bodySize;
         le.tag = "size";
         aList.add(le);
         ListElement le2 = new ListElement();
@@ -183,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         current_list = "store";
         aa.clear();
         ListElement le = new ListElement();
-        le.textLabel = "TV: 50$";
+        le.textLabel = "TV: $50";
         le.tag = "tv";
         le.cost = 50;
         aList.add(le);
@@ -196,8 +207,9 @@ public class MainActivity extends AppCompatActivity {
         le.tag = "nap1";
         aList.add(le);
         ListElement le2 = new ListElement();
-        le2.textLabel = "Eat breakfest: $5";
-        le2.tag = "breakfest1";
+        le2.textLabel = "Eat breakfast: $5";
+        le2.tag = "breakfast1";
+        le2.cost = 5;
         aList.add(le2);
         ListElement le3 =  new ListElement();
         le3.textLabel = "Morning jog";
@@ -253,10 +265,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void eveningA(){
-        ListElement le = new ListElement();
-        le.textLabel = "Sleep";
-        le.tag = "Sleep1";
-        aList.add(le);
+        if(actionCount ==1) {
+            ListElement le = new ListElement();
+            le.textLabel = "Go to sleep";
+            le.tag = "sleep1";
+            aList.add(le);
+        }else{
+            ListElement le = new ListElement();
+            le.textLabel = "Take a late night nap";
+            le.tag = "nap1";
+            aList.add(le);
+        }
         ListElement le2 = new ListElement();
         le2.textLabel = "Eat Dinner: -$10";
         le2.tag = "dinner1";
