@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.preference.PreferenceManager;
+import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,24 +31,30 @@ public class MainActivity extends AppCompatActivity {
     public String timeOfDay = "Morning";
     public int numberDay = 1;
     public int actionCount = 3;
-    public int money = 150;
+    public int money = 50;
     public String bodySize = "Puny";
     public int bodyProgress = 0;
+    public int charisma = 0;
+    public int intelligence = 0;
+    public String job = "unemployed";
     public ArrayList<String> inv = new ArrayList<String>();
 
     private static MainActivity instance = null;
 
-    private int energy = 80;
+    private int energy = 70;
     public int energyMax = 100;
     private int hunger = 70;
     public int hungerMax = 100;
-    private int emotion = 50;
+    private int emotion = 70;
     public int emotionMax = 100;
 
 
     private String current_list;
 
     SharedPreferences settings;
+    SharedPreferences.Editor editor;
+
+
     public static MainActivity getActivity()
     {
         if(instance == null){
@@ -67,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         settings = PreferenceManager.getDefaultSharedPreferences((this));
+        editor = settings.edit();
 
         aList = new ArrayList<ListElement>();
         aa = new ListAdapter(this, R.layout.list_view, aList);
@@ -82,6 +92,46 @@ public class MainActivity extends AppCompatActivity {
         instance = this;
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem mItem=menu.findItem(R.id.action_settings);
+
+        mItem.setOnMenuItemClickListener(
+                new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        timeOfDay = "Morning";
+                        numberDay = 1;
+                        actionCount = 3;
+                        money = 50;
+                        bodySize = "Puny";
+                        bodyProgress = 0;
+                        charisma = 0;
+                        intelligence = 0;
+                        job = "unemployed";
+                        energy = 70;
+                        energyMax = 100;
+                        hunger = 70;
+                        hungerMax = 100;
+                        emotion = 70;
+                        emotionMax = 100;
+                        inv.clear();
+                        editor.putInt("energy", energy);
+                        editor.putInt("emotion", emotion);
+                        editor.putInt("hunger", hunger);
+                        editor.commit();
+                        init();
+                        reload();
+
+                        return false;
+                    }
+                });
+        return true;
     }
 
     public void decrement_count()
@@ -147,17 +197,21 @@ public class MainActivity extends AppCompatActivity {
         current_list = "stats";
         aa.clear();
         ListElement le = new ListElement();
-        le.textLabel = "Body size: " + bodySize;
+        le.textLabel = "Body size: " + bodySize + " level up: " + bodyProgress + "/100";
         le.tag = "size";
         aList.add(le);
         ListElement le2 = new ListElement();
-        le2.textLabel = "Intelligence";
+        le2.textLabel = "Intelligence: " + intelligence;
         le2.tag = "Intelligence";
         aList.add(le2);
         ListElement le3 = new ListElement();
-        le3.textLabel = "charisma";
+        le3.textLabel = "charisma: " + charisma;
         le3.tag = "charisma";
         aList.add(le3);
+        ListElement le4 = new ListElement();
+        le4.textLabel = "job: " + job;
+        le4.tag = "jobTitle";
+        aList.add(le4);
     }
 
     public void Inv(View v)
@@ -207,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         le.tag = "nap1";
         aList.add(le);
         ListElement le2 = new ListElement();
-        le2.textLabel = "Eat breakfast: $5";
+        le2.textLabel = "Eat breakfast: -$5";
         le2.tag = "breakfast1";
         le2.cost = 5;
         aList.add(le2);
@@ -215,8 +269,14 @@ public class MainActivity extends AppCompatActivity {
         le3.textLabel = "Morning jog";
         le3.tag = "jog1";
         aList.add(le3);
+        if(job.equals("Teacher")){
+            ListElement le9 = new ListElement();
+            le9.textLabel = "Work at a school";
+            le9.tag = "workSchool";
+            aList.add(le9);
+        }
         ListElement le4 =  new ListElement();
-        le4.textLabel = "Work odd jobs: +$20";
+        le4.textLabel = "Work odd jobs: +$25";
         le4.tag = "work1";
         aList.add(le4);
         ListElement le5 =  new ListElement();
@@ -226,15 +286,22 @@ public class MainActivity extends AppCompatActivity {
         ListElement le6 =  new ListElement();
         le6.textLabel = "Go to the movies: -$10";
         le6.tag = "movies";
+        le6.cost = 10;
         aList.add(le6);
 
         if(inv.contains("Tv"))
         {
             ListElement le7 =  new ListElement();
             le7.textLabel = "Watch TV";
-            le7.tag = "Watch TV";
+            le7.tag = "watchTV";
             aList.add(le7);
         }
+
+        ListElement le8 =  new ListElement();
+        le8.textLabel = "Go to the library: -$3";
+        le8.tag = "library";
+        le8.cost = 3;
+        aList.add(le8);
     }
 
     public void afternoonA(){
@@ -245,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
         ListElement le2 = new ListElement();
         le2.textLabel = "Eat Lunch: -$7";
         le2.tag = "lunch1";
+        le2.cost = 7;
         aList.add(le2);
         ListElement le3 =  new ListElement();
         le3.textLabel = "Afternoon jog";
@@ -253,15 +321,37 @@ public class MainActivity extends AppCompatActivity {
         ListElement le4 =  new ListElement();
         le4.textLabel = "Go to the gym: -$15";
         le4.tag = "gym";
+        le4.cost = 15;
         aList.add(le4);
+        if(job.equals("Fitness Trainer")){
+            ListElement le9 = new ListElement();
+            le9.textLabel = "Work at gym";
+            le9.tag = "workGym";
+            aList.add(le9);
+        }
         ListElement le5 =  new ListElement();
-        le5.textLabel = "Work odd jobs: +$20";
+        le5.textLabel = "Work odd jobs: +$25";
         le5.tag = "work1";
         aList.add(le5);
         ListElement le6 =  new ListElement();
         le6.textLabel = "Go to the movies: -$10";
         le6.tag = "movies";
+        le6.cost = 10;
         aList.add(le6);
+        if(inv.contains("Tv"))
+        {
+            ListElement le7 =  new ListElement();
+            le7.textLabel = "Watch TV";
+            le7.tag = "watchTV";
+            aList.add(le7);
+        }
+
+        ListElement le8 =  new ListElement();
+        le8.textLabel = "Go to the library: -$3";
+        le8.tag = "library";
+        le8.cost = 3;
+        aList.add(le8);
+
     }
 
     public void eveningA(){
@@ -279,19 +369,57 @@ public class MainActivity extends AppCompatActivity {
         ListElement le2 = new ListElement();
         le2.textLabel = "Eat Dinner: -$10";
         le2.tag = "dinner1";
+        le2.cost = 10;
         aList.add(le2);
         ListElement le3 =  new ListElement();
-        le3.textLabel = "Late night jog... risky";
-        le3.tag = "jog2";
+        le3.textLabel = "Go to the gym: -$15";
+        le3.tag = "gym";
         aList.add(le3);
         ListElement le4 =  new ListElement();
-        le4.textLabel = "Go to the gym: -$15";
-        le4.tag = "gym";
+        le4.textLabel = "Go out to drink:  -$40";
+        le4.tag = "drink";
+        le4.cost = 40;
         aList.add(le4);
-        ListElement le5 =  new ListElement();
-        le5.textLabel = "Go out to drink: -$15 to -$30";
-        le5.tag = "drink";
-        aList.add(le5);
+        ListElement le8 =  new ListElement();
+        le8.textLabel = "Go to the movies: -$10";
+        le8.tag = "movies";
+        le8.cost = 10;
+        aList.add(le8);
+
+        if(inv.contains("Tv"))
+        {
+            ListElement le9 =  new ListElement();
+            le9.textLabel = "Watch TV";
+            le9.tag = "watchTV";
+            aList.add(le9);
+        }
+
+        if(job.equals("unemployed")){
+            ListElement le5 = new ListElement();
+            le5.textLabel = "Find a job in teaching: 100 intelligence needed";
+            le5.tag = "findJobTeaching";
+            aList.add(le5);
+            ListElement le6 = new ListElement();
+            le6.textLabel = "Find a job at the gym: medium build minimum";
+            le6.tag = "findJobGym";
+            aList.add(le6);
+            ListElement le7 = new ListElement();
+            le7.textLabel = "Find a job in bartending: 150 charisma needed";
+            le7.tag = "findJobBar";
+            aList.add(le7);
+        }
+        if(job.equals("Fitness Trainer")){
+            ListElement le5 = new ListElement();
+            le5.textLabel = "Work at gym";
+            le5.tag = "workGym";
+            aList.add(le5);
+        }
+        if(job.equals("Bartender")){
+            ListElement le5 = new ListElement();
+            le5.textLabel = "Work at bar";
+            le5.tag = "workBar";
+            aList.add(le5);
+        }
     }
 
 
