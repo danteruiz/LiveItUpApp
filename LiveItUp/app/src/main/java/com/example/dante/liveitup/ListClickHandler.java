@@ -46,7 +46,7 @@ public class ListClickHandler implements OnItemClickListener {
         ListElement item = (ListElement) adapter.getItemAtPosition(position);
         String action = item.tag;
         energy = settings.getInt("energy", energy);
-        Activity.money = settings.getInt("money", Activity.money);
+        Activity.money = settings.getInt("100", Activity.money);
         hunger = settings.getInt("hunger", hunger);
         emotion = settings.getInt("emotion", emotion);
         Activity.energyMax = settings.getInt("energyMax", Activity.energyMax);

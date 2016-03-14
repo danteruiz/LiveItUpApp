@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                         emotion = 70;
                         emotionMax = 100;
                         inv.clear();
+                        editor.putString("bodySize", bodySize);
                         editor.putInt("energy", energy);
                         editor.putInt("emotion", emotion);
                         editor.putInt("hunger", hunger);
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             bodySize = "Small build";
             energyMax = 130;
             editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
             editor.commit();
             return;
         }
@@ -191,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
             bodySize = "Medium build";
             energyMax = 150;
             editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
             editor.commit();
             return;
         }
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
             bodySize = "Athletic build";
             energyMax = 170;
             editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
             editor.commit();
             return;
         }
@@ -205,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
             bodySize = "Max build";
             energyMax = 200;
             editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
             editor.commit();
         }
     }
@@ -230,6 +235,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void Stats(View v)
     {
+        bodySize = settings.getString("bodySize", bodySize);
+        bodyProgress =  settings.getInt("bodyProgress", bodyProgress);
+
         current_list = "stats";
         aa.clear();
         ListElement le = new ListElement();
@@ -412,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
         ListElement le3 =  new ListElement();
         le3.textLabel = "Go to the gym: -$15";
         le3.tag = "gym";
+        le3.cost = 15;
         aList.add(le3);
         ListElement le4 =  new ListElement();
         le4.textLabel = "Go out to drink:  -$40";
