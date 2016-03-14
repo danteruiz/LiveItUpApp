@@ -30,6 +30,7 @@ public class ListClickHandler implements OnItemClickListener {
 
     private MainActivity Activity;
 
+
     ListClickHandler(int energy, int hunger, int emotion, SharedPreferences settings, MainActivity Activity)
     {
         this.energy = energy;
@@ -48,6 +49,7 @@ public class ListClickHandler implements OnItemClickListener {
         Activity.money = settings.getInt("money", Activity.money);
         hunger = settings.getInt("hunger", hunger);
         emotion = settings.getInt("emotion", emotion);
+        Activity.energyMax = settings.getInt("energyMax", Activity.energyMax);
 
         if(action.equals("nap1")) // sleep level one
         {
@@ -66,7 +68,6 @@ public class ListClickHandler implements OnItemClickListener {
             editor.putInt("hunger", hunger);
             editor.commit();
             Activity.decrement_count();
-            Activity.reload();
         }
 
 
@@ -86,6 +87,7 @@ public class ListClickHandler implements OnItemClickListener {
 
             editor.putInt("energy", energy);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
             editor.commit();
             Activity.decrement_count();
         }
@@ -108,10 +110,9 @@ public class ListClickHandler implements OnItemClickListener {
             if(emotion > Activity.emotionMax) emotion = Activity.emotionMax;
 
             Activity.bodyProgress += 15;
-            if(Activity.bodyProgress == 100){
+            if(Activity.bodyProgress >= 100){
                 Activity.bodyIncrease();
                 Activity.bodyProgress = 0;
-                Activity.energyMax += 50;
             }
 
             editor.putInt("energy", energy);
@@ -145,6 +146,7 @@ public class ListClickHandler implements OnItemClickListener {
             editor.putInt("energy", energy);
             editor.putInt("emotion", emotion);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
             editor.commit();
             Activity.decrement_count();
         }
@@ -191,6 +193,7 @@ public class ListClickHandler implements OnItemClickListener {
 
             editor.putInt("emotion", emotion);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
             editor.commit();
             Activity.decrement_count();
         }
@@ -243,6 +246,7 @@ public class ListClickHandler implements OnItemClickListener {
 
             editor.putInt("energy", energy);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
 
             editor.commit();
             Activity.decrement_count();
@@ -264,6 +268,7 @@ public class ListClickHandler implements OnItemClickListener {
 
             editor.putInt("energy", energy);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
 
             editor.commit();
             Activity.decrement_count();
@@ -290,14 +295,14 @@ public class ListClickHandler implements OnItemClickListener {
             if(emotion > Activity.emotionMax) emotion = Activity.emotionMax;
 
             Activity.bodyProgress += 30;
-            if(Activity.bodyProgress == 100){
+            if(Activity.bodyProgress >= 100){
                 Activity.bodyIncrease();
                 Activity.bodyProgress = 0;
-                Activity.energyMax += 50;
             }
 
             editor.putInt("energy", energy);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
             editor.commit();
             Activity.decrement_count();
         }
@@ -338,6 +343,7 @@ public class ListClickHandler implements OnItemClickListener {
 
             editor.putInt("energy", energy);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
             editor.commit();
             Activity.decrement_count();
         }
@@ -368,10 +374,135 @@ public class ListClickHandler implements OnItemClickListener {
             editor.putInt("energy", energy);
             editor.putInt("emotion", emotion);
             editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
             editor.commit();
             Activity.decrement_count();
         }
 
+        if(action.equals("findJobTeaching")){
+
+            if(Activity.intelligence < 100) return;
+
+            Activity.job = "Teacher";
+
+            Activity.decrement_count();
+            Activity.reload();
+        }
+
+        if(action.equals("findJobGym")){
+
+            if(Activity.bodySize.equals("puny") || Activity.bodySize.equals("Small build")) return;
+
+            Activity.job = "Fitness Trainer";
+
+            Activity.decrement_count();
+            Activity.reload();
+        }
+
+        if(action.equals("findJobBar")){
+
+            if(Activity.charisma < 150) return;
+
+            Activity.job = "Bartender";
+
+            Activity.decrement_count();
+            Activity.reload();
+        }
+
+        if(action.equals("workSchool")){
+
+            energy -= 30;
+            if(energy < 0){
+                energy +=30;
+                return;
+            }
+            emotion -= 20;
+            if(emotion < 0){
+                emotion +=20;
+                return;
+            }
+
+            hunger -= 20;
+            if(hunger < 0){
+                hunger +=20;
+                return;
+            }
+
+            Activity.money += 50;
+
+            editor.putInt("energy", energy);
+            editor.putInt("emotion", emotion);
+            editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
+            editor.commit();
+            Activity.decrement_count();
+        }
+
+        if(action.equals("workGym")){
+
+            energy -= 30;
+            if(energy < 0){
+                energy +=30;
+                return;
+            }
+            emotion -= 20;
+            if(emotion < 0){
+                emotion +=20;
+                return;
+            }
+
+            hunger -= 20;
+            if(hunger < 0){
+                hunger +=20;
+                return;
+            }
+
+            if(Activity.bodySize.equals("Medium build")) {
+                Activity.money += 30;
+            }
+            if(Activity.bodySize.equals("Athletic build")) {
+                Activity.money += 60;
+            }
+            if(Activity.bodySize.equals("Max build")) {
+                Activity.money += 100;
+            }
+
+            editor.putInt("energy", energy);
+            editor.putInt("emotion", emotion);
+            editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
+            editor.commit();
+            Activity.decrement_count();
+        }
+
+        if(action.equals("workBar")){
+
+            energy -= 30;
+            if(energy < 0){
+                energy +=30;
+                return;
+            }
+            emotion -= 20;
+            if(emotion < 0){
+                emotion +=20;
+                return;
+            }
+
+            hunger -= 20;
+            if(hunger < 0){
+                hunger +=20;
+                return;
+            }
+
+            Activity.money += 30 + Activity.charisma/5;
+
+            editor.putInt("energy", energy);
+            editor.putInt("emotion", emotion);
+            editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
+            editor.commit();
+            Activity.decrement_count();
+        }
 
 
         Activity.init();
