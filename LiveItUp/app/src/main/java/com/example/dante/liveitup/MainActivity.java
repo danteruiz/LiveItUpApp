@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public int actionCount = 3;
     public int money = 50;
     public String bodySize = "Puny";
-    public int bodyProgress = 0;
+    public int bodyProgress = 95;
     public int charisma = 0;
     public int intelligence = 0;
     public String job = "unemployed";
@@ -121,10 +121,22 @@ public class MainActivity extends AppCompatActivity {
                         emotion = 70;
                         emotionMax = 100;
                         inv.clear();
+                        editor.putString("bodySize", bodySize);
                         editor.putInt("energy", energy);
                         editor.putInt("emotion", emotion);
                         editor.putInt("hunger", hunger);
+                        editor.putInt("energyMax", energyMax);
+                        editor.putInt("hungerMax", hungerMax);
+                        editor.putInt("emotionMax", emotionMax);
+                        editor.putInt("100", money);
+                        editor.putInt("1", numberDay);
                         editor.commit();
+                        progressBar.setMax(energyMax);
+                        progressBar.setProgress(energyMax);
+                        progressBar2.setMax(hungerMax);
+                        progressBar2.setProgress(hungerMax);
+                        progressBar3.setMax(emotionMax);
+                        progressBar3.setProgress(emotionMax);
                         init();
                         reload();
 
@@ -158,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             {
                 timeOfDay = "Morning";
                 numberDay += 1;
+                editor.putInt("1", numberDay);
+                editor.commit();
                 reload();
                 return;
             }
@@ -167,10 +181,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bodyIncrease(){
-        if(bodySize.equals("Puny")) bodySize = "Small build";
-        if(bodySize.equals("Small build")) bodySize = "Medium build";
-        if(bodySize.equals("Medium build")) bodySize = "Athletic build";
-        if(bodySize.equals("Althetic build")) bodySize = "Max build";
+        if(bodySize.equals("Puny")) {
+            bodySize = "Small build";
+            energyMax = 130;
+            editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
+            editor.commit();
+            return;
+        }
+        if(bodySize.equals("Small build")) {
+            bodySize = "Medium build";
+            energyMax = 150;
+            editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
+            editor.commit();
+            return;
+        }
+        if(bodySize.equals("Medium build")) {
+            bodySize = "Athletic build";
+            energyMax = 170;
+            editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
+            editor.commit();
+            return;
+        }
+        if(bodySize.equals("Althetic build")) {
+            bodySize = "Max build";
+            energyMax = 200;
+            editor.putInt("energyMax", energyMax);
+            editor.putString("bodySize", bodySize);
+            editor.commit();
+        }
     }
 
 
@@ -194,6 +235,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void Stats(View v)
     {
+        bodySize = settings.getString("bodySize", bodySize);
+        bodyProgress =  settings.getInt("bodyProgress", bodyProgress);
+
         current_list = "stats";
         aa.clear();
         ListElement le = new ListElement();
@@ -271,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         aList.add(le3);
         if(job.equals("Teacher")){
             ListElement le9 = new ListElement();
-            le9.textLabel = "Work at a school";
+            le9.textLabel = "Work at a school: +$50";
             le9.tag = "workSchool";
             aList.add(le9);
         }
@@ -325,7 +369,9 @@ public class MainActivity extends AppCompatActivity {
         aList.add(le4);
         if(job.equals("Fitness Trainer")){
             ListElement le9 = new ListElement();
-            le9.textLabel = "Work at gym";
+            if(bodySize.equals("Medium build")) le9.textLabel = "Work at gym: +30";
+            if(bodySize.equals("Athletic build")) le9.textLabel = "Work at gym: +60";
+            if(bodySize.equals("Max build")) le9.textLabel = "Work at gym: +100";
             le9.tag = "workGym";
             aList.add(le9);
         }
@@ -374,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
         ListElement le3 =  new ListElement();
         le3.textLabel = "Go to the gym: -$15";
         le3.tag = "gym";
+        le3.cost = 15;
         aList.add(le3);
         ListElement le4 =  new ListElement();
         le4.textLabel = "Go out to drink:  -$40";
@@ -416,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(job.equals("Bartender")){
             ListElement le5 = new ListElement();
-            le5.textLabel = "Work at bar";
+            le5.textLabel = "Work at bar: +$30 + " + charisma/5;
             le5.tag = "workBar";
             aList.add(le5);
         }
@@ -433,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
 
         numberDay = settings.getInt("1", numberDay);
         String dayText = Integer.toString(numberDay);
-        countDay.setText("Day:" + dayText);
+        countDay.setText("Day: " + dayText);
 
         money = settings.getInt("100", money);
         TextView moneyAmount = (TextView) findViewById(R.id.textView3);
