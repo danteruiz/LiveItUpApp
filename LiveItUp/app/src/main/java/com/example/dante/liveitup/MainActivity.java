@@ -296,6 +296,11 @@ public class MainActivity extends AppCompatActivity {
         le.tag = "tv";
         le.cost = 50;
         aList.add(le);
+        ListElement le2 = new ListElement();
+        le2.textLabel = "Toaster: $50";
+        le2.tag = "toaster";
+        le2.cost = 50;
+        aList.add(le2);
 
     }
 
@@ -306,7 +311,11 @@ public class MainActivity extends AppCompatActivity {
         aList.add(le);
         ListElement le2 = new ListElement();
         le2.textLabel = "Eat breakfast: -$5";
-        le2.tag = "breakfast1";
+        if(inv.contains("Toaster")){
+            le2.tag = "breakfast2";
+        }else{
+            le2.tag = "breakfast1";
+        }
         le2.cost = 5;
         aList.add(le2);
         ListElement le3 =  new ListElement();

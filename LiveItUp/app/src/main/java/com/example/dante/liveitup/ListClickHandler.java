@@ -92,6 +92,27 @@ public class ListClickHandler implements OnItemClickListener {
             Activity.decrement_count();
         }
 
+        if(action.equals("breakfast2")){
+
+            if(Activity.money < item.cost) return;
+            Activity.money -= item.cost;
+
+            energy -=10;
+            if(energy < 0){
+                energy +=10;
+                return;
+            }
+
+            hunger += 40 + Activity.hungerMax/5;
+            if(hunger > Activity.hungerMax) hunger = Activity.hungerMax;
+
+            editor.putInt("energy", energy);
+            editor.putInt("hunger", hunger);
+            editor.putInt("100", Activity.money);
+            editor.commit();
+            Activity.decrement_count();
+        }
+
         if(action.equals("jog1")){
 
             energy -= 30;
@@ -222,6 +243,23 @@ public class ListClickHandler implements OnItemClickListener {
                 Activity.decrement_count();
                 Activity.inv.add("Tv");
                 Activity.money -= item.cost;
+
+                editor.putInt("100", Activity.money);
+                editor.commit();
+                Activity.decrement_count();
+            }
+        }
+
+        if(action.equals("toaster"))
+        {
+            if (Activity.money >= item.cost && !Activity.inv.contains("toaster")) {
+                Activity.decrement_count();
+                Activity.inv.add("Toaster");
+                Activity.money -= item.cost;
+
+                editor.putInt("100", Activity.money);
+                editor.commit();
+                Activity.decrement_count();
             }
         }
 
